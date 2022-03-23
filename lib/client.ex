@@ -1,37 +1,60 @@
 defmodule ExIsbndb.Client do
+  @moduledoc """
+  The `Client` module is in charge of creating and sending
+  requests to the ISBNdb API.
+  """
   @base_url %{
     basic: "https://api2.isbndb.com/",
     premium: "https://api.premium.isbndb.com/",
     pro: "https://api.pro.isbndb.com/"
   }
 
+  @doc """
+  Builds and sends a request to the ISBNdb API.
+
+  Accepts `:get` and `:post` methods.
+
+  Example
+  ```
+  iex> ExIsbndb.Client.request(:get, "author/{author_name}")
+  {:ok, %Finch.Reponse{body: "json_string", headers: [...], status: 200}}
+  ```
+  """
   @spec request(:get | :post, binary(), map()) :: {:ok, Finch.Response.t()} | {:error, any()}
-  def request(method, path, params) when is_map(params) and is_binary(path)do
+  def request(method, path, params \\ %{}) when is_map(params) and is_binary(path) do
     method
     |> build_request(path, params)
-    |> case do
-      {:error, error} -> {:error, error}
-
-      req -> Finch.request(req, IsbnFinch)
-    end
+    |> Finch.request(IsbnFinch)
   end
 
-  ### PRIV
+  ##########
+  ## PRIV ##
+  ##########
+
+  # Builds the Finch request
   defp build_request(:get, path, params),
     do: Finch.build(:get, build_url(path, params), headers())
 
-  defp build_request(:post, path, params), do:
-  Finch.build(:post, build_url(path), headers(), Jason.encode_to_iodata!(params))
+  defp build_request(:post, path, params),
+    do: Finch.build(:post, build_url(path), headers(), Jason.encode_to_iodata!(params))
 
-  defp build_request(_, _, _), do: {:error, :method_not_supported}
+  defp build_request(method, _path, _params),
+    do:
+      raise(
+        ArgumentError,
+        "unsupported method #{inspect(method)}. Supported methods `:get`, `:post`"
+      )
 
+  # Builds the URL with the query params if needed
   defp build_url(path), do: base_url() <> path
-
   defp build_url(path, params), do: base_url() <> path <> "?" <> URI.encode_query(params)
 
+  # Returns the required HTTP headers
   defp headers, do: [{"Authorization", api_key()}]
 
+  # Fetches the ISBNdb API key
   defp api_key, do: Application.fetch_env!(:ex_isbndb, :api_key)
 
+  # Returns the base URL based on the ISBNdb plan
   defp base_url, do: Map.fetch!(@base_url, Application.fetch_env!(:ex_isbndb, :plan))
 end
