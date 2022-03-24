@@ -22,8 +22,13 @@ defmodule ExIsbndb.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      # Client
       {:jason, "~> 1.3"},
-      {:finch, "~> 0.10"}
+      {:finch, "~> 0.10"},
+
+      # Static code analisis
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.1", only: [:dev], runtime: false}
     ]
   end
 end
