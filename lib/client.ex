@@ -53,8 +53,28 @@ defmodule ExIsbndb.Client do
   defp headers, do: [{"Authorization", api_key()}]
 
   # Fetches the ISBNdb API key
-  defp api_key, do: Application.fetch_env!(:ex_isbndb, :api_key)
+  defp api_key do
+    case Application.fetch_env!(:ex_isbndb, :api_key) do
+      key when is_binary(key) ->
+        key
+
+      key ->
+        raise KeyError,
+              "unsupported API Key #{inspect(key)}. Must be a binary value."
+    end
+  end
 
   # Returns the base URL based on the ISBNdb plan
-  defp base_url, do: Map.fetch!(@base_url, Application.fetch_env!(:ex_isbndb, :plan))
+  defp base_url do
+    plan = Application.fetch_env!(:ex_isbndb, :plan)
+
+    case Map.fetch(@base_url, plan) do
+      :error ->
+        raise KeyError,
+              "unsupported plan #{inspect(plan)}. Supported plans `:basic`, `:premium`, `:pro`"
+
+      {:ok, url} ->
+        url
+    end
+  end
 end
