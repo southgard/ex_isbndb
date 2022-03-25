@@ -47,9 +47,26 @@ defmodule ExIsbndb.Book do
   """
   @spec search(map()) :: {:ok, Finch.Response.t()} | {:error, Exception.t()}
   def search(%{query: query} = params) when is_binary(query) do
-    params = %{page: params[:page], pageSize: params[:page_size], column: validate_column(params[:page_size])}
+    params = %{
+      page: params[:page],
+      pageSize: params[:page_size],
+      column: validate_column(params[:column])
+    }
 
     Client.request(:get, "books/#{URI.encode(query)}", params)
+  end
+
+  @doc """
+  This returns a list of books that match the query. Only with the Premium and Pro plans and can only send up to 1,000 ISBN numbers per request.
+
+  ## Examples
+
+    iex> ExIsbndb.Book.get_by_isbns(["123456789", "987654321"])
+    {:ok, %Finch.Response{body: "...", headers: [...], status: 200}}
+
+  """
+  def get_by_isbns(isbns) when is_list(isbns) do
+    Client.request(:post, "books", %{isbns: isbns})
   end
 
   ### PRIV
