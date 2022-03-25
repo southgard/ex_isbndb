@@ -1,6 +1,6 @@
 defmodule ExIsbndb.Client do
   @moduledoc """
-  The `Client` module is in charge of creating and sending
+  The `ExIsbndb.Client` module is in charge of creating and sending
   requests to the ISBNdb API.
   """
   @base_url %{
@@ -14,11 +14,11 @@ defmodule ExIsbndb.Client do
 
   Accepts `:get` and `:post` methods.
 
-  Example
-  ```
-  iex> ExIsbndb.Client.request(:get, "author/{author_name}")
-  {:ok, %Finch.Reponse{body: "json_string", headers: [...], status: 200}}
-  ```
+  ## Examples
+
+      iex> ExIsbndb.Client.request(:get, "author/{author_name}")
+      {:ok, %Finch.Reponse{body: "json_string", headers: [...], status: 200}}
+
   """
   @spec request(:get | :post, binary(), map()) :: {:ok, Finch.Response.t()} | {:error, any()}
   def request(method, path, params \\ %{}) when is_map(params) and is_binary(path) do
