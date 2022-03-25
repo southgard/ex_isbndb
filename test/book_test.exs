@@ -4,7 +4,7 @@ defmodule ExIsbndb.BookTest do
   alias ExIsbndb.Book
 
   describe "get/1" do
-    @valid_isbn "9788466657662"
+    @valid_params %{isbn: "9788466657662", with_prices: 0}
 
     test "returns a response when the params are valid" do
       with_mock(Finch, [:passthrough],
@@ -12,7 +12,7 @@ defmodule ExIsbndb.BookTest do
           {:ok, %Finch.Response{body: "Book...", headers: [], status: 200}}
         end
       ) do
-        assert {:ok, %Finch.Response{}} = Book.get(@valid_isbn)
+        assert {:ok, %Finch.Response{}} = Book.get(@valid_params)
       end
     end
   end

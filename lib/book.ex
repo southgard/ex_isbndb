@@ -13,15 +13,25 @@ defmodule ExIsbndb.Book do
   @doc """
   Returns an instance of Book
 
+  Params required:
+
+  * isbn (string) - string representing the isbn to search
+
+  Params available:
+
+  * with_prices (integer): 1 being true or 0 being false
+
   ## Examples
 
-      iex> ExIsbndb.Book.get(1234567789)
+      iex> ExIsbndb.Book.get(%{isbn: "1234567789", with_prices: 0)
       {:ok, %Finch.Response{body: "...", headers: [...], status: 200}}
 
   """
   @spec get(map()) :: {:ok, Finch.Response.t()} | {:error, Exception.t()}
-  def get(isbn13) when is_binary(isbn13) do
-    Client.request(:get, "book/#{isbn13}", %{})
+  def get(%{isbn: isbn} = params) when is_binary(isbn) do
+    params = %{with_prices: Map.get(params, :with_prices, 0)}
+
+    Client.request(:get, "book/#{URI.encode(isbn)}", params)
   end
 
   @doc """
@@ -65,6 +75,7 @@ defmodule ExIsbndb.Book do
     {:ok, %Finch.Response{body: "...", headers: [...], status: 200}}
 
   """
+  @spec search(list()) :: {:ok, Finch.Response.t()} | {:error, Exception.t()}
   def get_by_isbns(isbns) when is_list(isbns) do
     Client.request(:post, "books", %{isbns: isbns})
   end
