@@ -1,4 +1,4 @@
-# ExIsbndb
+# ExIsbndb [![.github/workflows/elixir_workflow.yaml](https://github.com/southgard/ex_isbndb/actions/workflows/elixir_workflow.yaml/badge.svg)](https://github.com/southgard/ex_isbndb/actions/workflows/elixir_workflow.yaml) [![Coverage Status](https://coveralls.io/repos/github/southgard/ex_isbndb/badge.svg?branch=feature/coverage-badges)](https://coveralls.io/github/southgard/ex_isbndb?branch=feature/coverage-badges)
 
 **TODO: Add description**
 

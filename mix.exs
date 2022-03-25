@@ -7,7 +7,15 @@ defmodule ExIsbndb.MixProject do
       version: "0.1.0",
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
-      deps: deps()
+      deps: deps(),
+      test_coverage: [tool: ExCoveralls],
+      preferred_cli_env: [
+        coveralls: :test,
+        "coveralls.detail": :test,
+        "coveralls.post": :test,
+        "coveralls.html": :test,
+        "coveralls.github": :test
+      ]
     ]
   end
 
@@ -28,6 +36,9 @@ defmodule ExIsbndb.MixProject do
 
       # Client testing
       {:mock, "~> 0.3", only: :test},
+
+      # Testing coverage
+      {:excoveralls, "~> 0.14", only: :test},
 
       # Static code analisis
       {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
