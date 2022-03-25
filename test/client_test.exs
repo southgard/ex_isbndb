@@ -7,19 +7,30 @@ defmodule ExIsbndb.ClientTest do
     @valid_path "author/brandon"
     @invalid_path :path
 
-    @valid_method :get
+    @valid_get_method :get
+    @valid_post_method :post
     @invalid_method "GET"
 
     @valid_params %{page: 1, page_length: 10}
     @invalid_params [1, 2, 3]
 
-    test "Returns a response when valid params are introduced" do
+    test "Returns a response when valid params are introduced in a get response" do
       with_mock Finch, [:passthrough],
         request: fn _request, _server ->
           {:ok, %Finch.Response{body: "", headers: [], status: 200}}
         end do
         assert {:ok, %Finch.Response{status: 200}} =
-                 Client.request(@valid_method, @valid_path, @valid_params)
+                 Client.request(@valid_get_method, @valid_path, @valid_params)
+      end
+    end
+
+    test "Returns a response when valid params are introduced in a post response" do
+      with_mock Finch, [:passthrough],
+        request: fn _request, _server ->
+          {:ok, %Finch.Response{body: "", headers: [], status: 200}}
+        end do
+        assert {:ok, %Finch.Response{status: 200}} =
+                 Client.request(@valid_post_method, @valid_path, @valid_params)
       end
     end
 
@@ -31,13 +42,13 @@ defmodule ExIsbndb.ClientTest do
 
     test "Raises an error if path is not a binary" do
       assert_raise FunctionClauseError, fn ->
-        Client.request(@valid_method, @invalid_path, @valid_params)
+        Client.request(@valid_get_method, @invalid_path, @valid_params)
       end
     end
 
     test "Raises an error if params are not a map" do
       assert_raise FunctionClauseError, fn ->
-        Client.request(@valid_method, @valid_path, @invalid_params)
+        Client.request(@valid_get_method, @valid_path, @invalid_params)
       end
     end
 
@@ -45,7 +56,7 @@ defmodule ExIsbndb.ClientTest do
       Application.delete_env(:ex_isbndb, :api_key)
 
       assert_raise ArgumentError, fn ->
-        Client.request(@valid_method, @valid_path, @valid_params)
+        Client.request(@valid_get_method, @valid_path, @valid_params)
       end
 
       Application.put_env(:ex_isbndb, :api_key, "API_KEY")
@@ -55,7 +66,7 @@ defmodule ExIsbndb.ClientTest do
       Application.delete_env(:ex_isbndb, :plan)
 
       assert_raise ArgumentError, fn ->
-        Client.request(@valid_method, @valid_path, @valid_params)
+        Client.request(@valid_get_method, @valid_path, @valid_params)
       end
 
       Application.put_env(:ex_isbndb, :plan, :basic)
@@ -65,7 +76,7 @@ defmodule ExIsbndb.ClientTest do
       Application.put_env(:ex_isbndb, :api_key, :invalid_api)
 
       assert_raise KeyError, fn ->
-        Client.request(@valid_method, @valid_path, @valid_params)
+        Client.request(@valid_get_method, @valid_path, @valid_params)
       end
 
       Application.put_env(:ex_isbndb, :api_key, "APY_KEY")
@@ -75,7 +86,7 @@ defmodule ExIsbndb.ClientTest do
       Application.put_env(:ex_isbndb, :plan, "CUSTOM PLAN")
 
       assert_raise KeyError, fn ->
-        Client.request(@valid_method, @valid_path, @valid_params)
+        Client.request(@valid_get_method, @valid_path, @valid_params)
       end
 
       Application.put_env(:ex_isbndb, :plan, :basic)
