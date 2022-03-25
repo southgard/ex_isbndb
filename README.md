@@ -1,6 +1,6 @@
 # ExIsbndb 
 
-[![.github/workflows/elixir_workflow.yaml](https://github.com/southgard/ex_isbndb/actions/workflows/elixir_workflow.yaml/badge.svg)](https://github.com/southgard/ex_isbndb/actions/workflows/elixir_workflow.yaml) [![Coverage Status](https://coveralls.io/repos/github/southgard/ex_isbndb/badge.svg?branch=main)](https://coveralls.io/github/southgard/ex_isbndb?branch=main)
+[![CI](https://github.com/southgard/ex_isbndb/actions/workflows/elixir_workflow.yaml/badge.svg?branch=main)](https://github.com/southgard/ex_isbndb/actions/workflows/elixir_workflow.yaml) [![Coverage Status](https://coveralls.io/repos/github/southgard/ex_isbndb/badge.svg?branch=main)](https://coveralls.io/github/southgard/ex_isbndb?branch=main)
 
 **TODO: Add description**
 
