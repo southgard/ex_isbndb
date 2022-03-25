@@ -8,6 +8,8 @@ defmodule ExIsbndb.MixProject do
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
+
+      # Coveralls
       test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
         coveralls: :test,
@@ -15,6 +17,15 @@ defmodule ExIsbndb.MixProject do
         "coveralls.post": :test,
         "coveralls.html": :test,
         "coveralls.github": :test
+      ],
+
+      # Docs
+      name: "ExIsbndb",
+      source_url: "https://github.com/southgard/ex_isbndb",
+      docs: [
+        main: "readme",
+        extras: ["README.md"],
+        authors: ["Guillem Acero", "Xavi Rodríguez"]
       ]
     ]
   end
@@ -45,7 +56,7 @@ defmodule ExIsbndb.MixProject do
       {:dialyxir, "~> 1.1", only: [:dev], runtime: false},
 
       # Documentation
-      {:ex_doc, "~> 0.28"}
+      {:ex_doc, "~> 0.28", only: :dev, runtime: false}
     ]
   end
 end
