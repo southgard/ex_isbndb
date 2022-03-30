@@ -4,10 +4,14 @@ defmodule ExIsbndb.MixProject do
   def project do
     [
       app: :ex_isbndb,
-      version: "0.1.0",
       elixir: "~> 1.10",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
+
+      # Package
+      version: "1.0.0",
+      description: description(),
+      package: package(),
 
       # Coveralls
       test_coverage: [tool: ExCoveralls],
@@ -21,12 +25,7 @@ defmodule ExIsbndb.MixProject do
 
       # Docs
       name: "ExIsbndb",
-      source_url: "https://github.com/southgard/ex_isbndb",
-      docs: [
-        main: "readme",
-        extras: ["README.md"],
-        authors: ["Guillem Acero", "Xavi Rodríguez"]
-      ]
+      docs: docs()
     ]
   end
 
@@ -57,6 +56,24 @@ defmodule ExIsbndb.MixProject do
 
       # Documentation
       {:ex_doc, "~> 0.28", only: :dev, runtime: false}
+    ]
+  end
+
+  defp description, do: "ExIsbndb is an API Wrapper for the ISBNdb API."
+
+  defp docs do
+    [
+      main: "readme",
+      extras: ["README.md"],
+      authors: ["Guillem Acero", "Xavi Rodríguez"]
+    ]
+  end
+
+  defp package do
+    [
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/southgard/ex_isbndb"},
+      source_url: "https://github.com/southgard/ex_isbndb"
     ]
   end
 end
