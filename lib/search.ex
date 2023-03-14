@@ -31,6 +31,7 @@ defmodule ExIsbndb.Search do
   * text (string) - a string to search in the determinated index topic
   * subject (string) - a subject
   * publisher (string) - the name of the publisher
+  * format (string) -  the desired format of the response
 
   Any other parameters will be ignored.
 
@@ -51,7 +52,8 @@ defmodule ExIsbndb.Search do
         author: params[:author],
         text: params[:text],
         subject: params[:subject],
-        publisher: params[:publisher]
+        publisher: params[:publisher],
+        format: params[:format]
       }
       # |> Map.filter(fn {_key, val} -> not is_nil(val) and val != "" end)
       # We are only able to use Map.filter/2 from Elixir 1.13
